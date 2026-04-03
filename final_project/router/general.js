@@ -46,11 +46,13 @@ public_users.get('/isbn/:isbn', function (req, res) {
 
 // Get book details based on author
 public_users.get('/author/:author', function (req, res) {
-  const author = req.params.author;
-  return new Promise((resolve, reject) => {
-    resolve(books[author]);
-  }).then((book) => {
-    const filteredBooks = Object.values(books).filter(book => 
+    const author = req.params.author;
+  
+    return new Promise((resolve, reject) => {
+      resolve(Object.values(books)); 
+    })
+    .then((booksArray) => {
+      const filteredBooks = booksArray.filter(book => 
         book.author.toLowerCase() === author.toLowerCase()
       );
   
@@ -59,8 +61,8 @@ public_users.get('/author/:author', function (req, res) {
       } else {
         return res.status(404).json({ message: "Author not found" });
       }
-  })
-});
+    });
+  });
 
 // Get all books based on title
 public_users.get('/title/:title', function (req, res) {
